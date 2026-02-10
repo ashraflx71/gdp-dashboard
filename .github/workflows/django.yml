@@ -1,0 +1,47 @@
+import dash
+from dash import dcc, html, Input, Output
+import plotly.express as px
+import pandas as pd
+
+# 1. تجهيز بيانات افتراضية (استبدلها بملف CSV الخاص بك)
+# df = pd.read_csv('gdp_data.csv')
+data = {
+    'Country': ['Egypt', 'USA', 'China', 'Germany', 'Japan', 'Egypt', 'USA', 'China'],
+    'Year': [2020, 2020, 2020, 2020, 2020, 2021, 2021, 2021],
+    'GDP': [400, 21000, 14000, 3800, 5000, 420, 23000, 17000]
+}
+df = pd.DataFrame(data)
+
+# 2. إعداد تطبيق Dash
+app = dash.Dash(__name__)
+
+app.layout = html.Div([
+    html.H1("GDP Dashboard - لوحة بيانات الناتج المحلي", style={'textAlign': 'center'}),
+    
+    html.Div([
+        html.Label("اختر السنة:"),
+        dcc.Dropdown(
+            id='year-dropdown',
+            options=[{'label': str(year), 'value': year} for year in df['Year'].unique()],
+            value=df['Year'].min()
+        ),
+    ], style={'width': '30%', 'margin': 'auto'}),
+
+    dcc.Graph(id='gdp-bar-chart')
+])
+
+# 3. الربط بين الاختيارات والرسوم البيانية (Callback)
+@app.callback(
+    Output('gdp-bar-chart', 'figure'),
+    Input('year-dropdown', 'value')
+)
+def update_graph(selected_year):
+    filtered_df = df[df['Year'] == selected_year]
+    fig = px.bar(filtered_df, x='Country', y='GDP', 
+                 title=f'GDP in {selected_year}',
+                 color='GDP', color_continuous_scale='Viridis')
+    return fig
+
+# 4. تشغيل التطبيق
+if __name__ == '__main__':
+    app.run_server(debug=True)
