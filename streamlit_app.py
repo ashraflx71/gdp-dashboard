@@ -1,7 +1,4 @@
 
-streamlit_app.py
-import streamlit as st
-import pandas as pd
 
 st.title("📊 لوحة تحليل الناتج المحلي (GDP)")
 st.success("تم تشغيل التطبيق بنجاح بعد إضافة الكود!")
