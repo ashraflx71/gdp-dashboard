@@ -1,19 +1,32 @@
-# :earth_americas: GDP dashboard template
+import streamlit as st
+from pix2tex.cli import LatexOCR
+from PIL import Image
 
-A simple Streamlit app showing the GDP of different countries in the world.
+# إعداد الصفحة لتناسب شاشة الهاتف
+st.set_page_config(page_title="محول المعادلات", layout="centered")
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gdp-dashboard-template.streamlit.app/)
+st.title("📝 محول الصور إلى LaTeX")
 
-### How to run it on your own machine
+# تحميل النموذج مع الذاكرة المؤقتة
+@st.cache_resource
+def load_model():
+    return LatexOCR()
 
-1. Install the requirements
+try:
+    model = load_model()
+    
+    # اختيار الملف
+    img_file = st.file_uploader("ارفع صورة المعادلة", type=['png', 'jpg', 'jpeg'])
 
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+    if img_file:
+        img = Image.open(img_file)
+        st.image(img, caption="الصورة المرفوعة")
+        
+        if st.button("تحويل"):
+            with st.spinner("جاري التحليل..."):
+                result = model(img)
+                st.success("تم!")
+                st.code(result)
+                st.latex(result)
+except Exception as e:
+    st.error(f"خطأ: {e}")
