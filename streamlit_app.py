@@ -149,3 +149,78 @@ for i, country in enumerate(selected_countries):
             delta=growth,
             delta_color=delta_color
         )
+import streamlit as st
+import pandas as pd
+import altair as alt
+
+# إعدادات الصفحة والجماليات
+st.set_page_config(page_title="محلل الناتج المحلي العالمي", page_icon="📈", layout="wide")
+
+# تنسيق العنوان
+st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🌍 لوحة بيانات الناتج المحلي الإجمالي</h1>", unsafe_allow_html=True)
+st.write("---")
+
+# وظيفة تحميل البيانات
+@st.cache_data
+def load_data():
+    try:
+        # تأكد من وضع الملف في مجلد data
+        df = pd.read_csv('data/gdp_data.csv')
+        return df
+    except:
+        return None
+
+df = load_data()
+
+if df is not None:
+    # --- الشريط الجانبي (Sidebar) ---
+    st.sidebar.header("🔍 محرك البحث والفلترة")
+    
+    # محرك بحث الدول (يسمح باختيار دول متعددة)
+    all_countries = sorted(df['Country'].unique())
+    selected_countries = st.sidebar.multiselect(
+        "ابحث عن الدول التي تريد مقارنتها:",
+        options=all_countries,
+        default=[all_countries[0]] # اختيار أول دولة تلقائياً
+    )
+
+    # فلترة السنوات
+    min_year = int(df['Year'].min())
+    max_year = int(df['Year'].max())
+    year_range = st.sidebar.slider("اختر النطاق الزمني:", min_year, max_year, (min_year, max_year))
+
+    # تطبيق الفلترة
+    mask = (df['Country'].isin(selected_countries)) & (df['Year'].between(year_range[0], year_range[1]))
+    filtered_df = df[mask]
+
+    # --- عرض النتائج ---
+    if not filtered_df.empty:
+        col1, col2 = st.columns([3, 1])
+
+        with col1:
+            st.subheader("📈 الرسم البياني للمقارنة")
+            chart = alt.Chart(filtered_df).mark_line(point=True, size=3).encode(
+                x=alt.X('Year:O', title='السنة'),
+                y=alt.Y('GDP:Q', title='الناتج المحلي (بمليارات الدولارات)'),
+                color=alt.Color('Country:N', title='الدولة'),
+                tooltip=['Country', 'Year', 'GDP']
+            ).properties(height=400).interactive()
+            st.altair_chart(chart, use_container_width=True)
+
+        with col2:
+            st.subheader("📋 البيانات المختارة")
+            st.dataframe(filtered_df.sort_values(by=['Country', 'Year']), use_container_width=True)
+            
+        # إضافة ميزة "أعلى قيمة" لكل دولة مختارة
+        st.write("---")
+        st.subheader("💡 ملخص سريع")
+        metrics_cols = st.columns(len(selected_countries) if len(selected_countries) <= 4 else 4)
+        for i, country in enumerate(selected_countries[:4]): # عرض أول 4 دول فقط كمؤشرات
+            country_max = filtered_df[filtered_df['Country'] == country]['GDP'].max()
+            metrics_cols[i % 4].metric(label=f"أعلى ناتج لـ {country}", value=f"${country_max}B")
+    else:
+        st.info("💡 ابدأ بالبحث واختيار الدول من القائمة الجانبية لعرض البيانات.")
+
+else:
+    st.error("⚠️ لم نجد ملف البيانات! تأكد من وجود ملف `data/gdp_data.csv`.")
+    st.info("يمكنك إنشاء المجلد والملف في GitHub ثم إعادة تحديث الصفحة.")
