@@ -12,3 +12,4 @@ df = pd.DataFrame(data)
 
 st.line_chart(df.set_index('السنة'))
 st.write("هذه لوحة بيانات تفاعلية بسيطة.")
+requirements.txt
