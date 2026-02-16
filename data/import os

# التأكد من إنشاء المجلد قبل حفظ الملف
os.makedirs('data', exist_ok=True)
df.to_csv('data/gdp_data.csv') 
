@@ -1,0 +1,5 @@
+import os
+
+# التأكد من إنشاء المجلد قبل حفظ الملف
+os.makedirs('data', exist_ok=True)
+df.to_csv('data/gdp_data.csv') 
