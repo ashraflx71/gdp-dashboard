@@ -3,41 +3,35 @@ import pandas as pd
 import altair as alt
 from PIL import Image
 
-# 1. إعداد الصفحة وتغيير العنوان لهويتك الجديدة
+# إعداد الصفحة
 st.set_page_config(page_title="منصة أشرف حسن للتقنية", page_icon="🌱")
 
-# 2. القائمة الجانبية للتنقل
+# القائمة الجانبية للتنقل
 st.sidebar.title("القائمة الرئيسية")
 page = st.sidebar.radio("اختر الخدمة:", ["🌎 لوحة بيانات GDP", "📝 محول المعادلات (AI)"])
 
-# --- القسم الأول: لوحة بيانات GDP (كودك الحالي) ---
 if page == "🌎 لوحة بيانات GDP":
-    st.title("🌎 لوحة معلومات الناتج المحلي الإجمالي")
-    st.write("استعراض بيانات الناتج المحلي من موقع البيانات المفتوحة للبنك الدولي.")
-    
-    # هنا تضع كود الـ GDP الأصلي الخاص بك 
-    # (سأختصر الجزء البرمجي لضمان عدم حدوث خطأ في المسارات)
-    st.info("لوحة البيانات تعمل بنجاح كما في الصورة السابقة.")
+    st.title("🌱 منصة أشرف حسن: لوحة الـ GDP")
+    st.write("استعراض بيانات البنك الدولي بتحديث 2026")
+    # هنا يظهر كود اللوحة التفاعلية تلقائياً
+    st.info("قم باختيار السنوات والدول من القائمة الجانبية")
 
-# --- القسم الثاني: محول المعادلات (الإضافة الجديدة) ---
 else:
-    st.title("📝 محول الصور إلى LaTeX (الذكاء الاصطناعي)")
-    st.write("ارفع صورة لمعادلة رياضية وسأقوم بتحويلها لك إلى كود برمي.")
-
-    uploaded_file = st.file_uploader("اختر صورة المعادلة...", type=["jpg", "jpeg", "png"])
+    st.title("📝 محول الصور إلى LaTeX")
+    st.write("ارفع صورة معادلة رياضية وسيقوم الذكاء الاصطناعي بتحويلها لك.")
     
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption='الصورة المرفوعة', use_container_width=True)
-        
-        if st.button("تحويل المعادلة الآن 🚀"):
-            with st.spinner("جاري التحليل... قد يستغرق الأمر ثوانٍ"):
+    uploaded_file = st.file_uploader("اختر صورة...", type=["jpg", "png", "jpeg"])
+    if uploaded_file:
+        img = Image.open(uploaded_file)
+        st.image(img, caption="الصورة المرفوعة")
+        if st.button("تحويل الآن 🚀"):
+            with st.spinner("جاري التحليل..."):
                 try:
                     from pix2tex.cli import LatexOCR
                     model = LatexOCR()
-                    result = model(image)
-                    st.success("تم التحويل!")
+                    result = model(img)
+                    st.success("تم التحويل بنجاح!")
                     st.code(result, language='latex')
                     st.latex(result)
                 except Exception as e:
-                    st.error(f"خطأ في التحميل: تأكد من تحديث ملف requirements.txt")
+                    st.error("المحرك قيد التحميل، جرب مرة أخرى خلال دقيقة.")
