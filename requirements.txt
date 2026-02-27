@@ -1,2 +1,7 @@
 streamlit
 pandas
+streamlit
+pandas
+altair
+pix2tex[gui]
+Pillow
