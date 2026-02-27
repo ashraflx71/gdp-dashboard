@@ -1,7 +1,5 @@
 streamlit
 pandas
-streamlit
-pandas
 altair
-pix2tex[gui]
+pix2tex
 Pillow
