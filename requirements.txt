@@ -1,5 +1,4 @@
 streamlit
 pandas
 altair
-pix2tex
 Pillow
