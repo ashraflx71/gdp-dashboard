@@ -30,3 +30,11 @@ try:
                 st.latex(result)
 except Exception as e:
     st.error(f"خطأ: {e}")
+<div style="text-align: center; padding: 20px;">
+    <div style="font-size: 50px;">🌱</div>
+    <h1 style="margin: 0; color: #2ecc71;">دليل البرمجيات الخضراء</h1>
+    <p style="color: #888; font-style: italic;">نحو مستقبل تقني مستدام</p>
+</div>
+streamlit
+pix2tex
+Pillow
