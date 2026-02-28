@@ -10,7 +10,16 @@ API_KEY = "اكتب_هنا_مفتاح_الـ_API_الخاص_بك"
 
 if API_KEY != "اكتب_هنا_مفتاح_الـ_API_الخاص_بك":
     genai.configure(api_key=API_KEY)
+from google import genai
 
+client = genai.Client()
+
+response = client.models.generate_content(
+    model="gemini-3-flash-preview",
+    contents="Explain how AI works in a few words",
+)
+
+print(response.text)
 st.sidebar.title("💎 قائمة التحكم")
 choice = st.sidebar.radio("انتقل إلى:", ["الرئيسية ولوحة GDP", "محول المعادلات الذكي"])
 
