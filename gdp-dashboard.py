@@ -18,10 +18,10 @@ st.markdown("""
         font-weight: bold;
     }
     .stMetric { 
-        background-color: #111; 
-        border: 1px solid #D4AF37; 
-        border-radius: 10px; 
-        padding: 10px;
+         background-color: #111; 
+         border: 1px solid #D4AF37; 
+         border-radius: 10px; 
+         padding: 10px;
     }
     footer {visibility: hidden;}
     </style>
@@ -30,7 +30,6 @@ st.markdown("""
 # --- 3. القائمة الجانبية (The Hub) ---
 st.sidebar.markdown("<h1 style='color: #D4AF37;'>💎 Ashraf Alex</h1>", unsafe_allow_html=True)
 st.sidebar.markdown("<p style='color: #888;'>العودة للصفر - رؤية 2026</p>", unsafe_allow_html=True)
-
 project_choice = st.sidebar.selectbox("🚀 انتقل بين مشاريعك الموحدة:", 
     ["محاكي سوار MIT", "مدونة Optimum 2026", "منصة Creative 2026", "خدمات شريف سالم"])
 
@@ -51,16 +50,16 @@ elif project_choice == "خدمات شريف سالم":
 if project_choice == "محاكي سوار MIT":
     st.markdown('<h1 class="gold-text">🚀 محاكي سوار MIT الذكي</h1>', unsafe_allow_html=True)
     st.write("نظام تحليل إشارات العضلات القائم على الذكاء الاصطناعي - بتوقيع **أشرف أليكس**")
-
+    
     # مدخلات المحاكي في القائمة الجانبية
     st.sidebar.header("🕹️ مستشعرات EMG")
     m1 = st.sidebar.slider("العضلة القابضة", 0, 100, 30)
     m2 = st.sidebar.slider("وتر الإبهام", 0, 100, 60)
-
+    
     if st.sidebar.checkbox("🍃 نمط توفير الطاقة"):
         time.sleep(0.4)
         st.sidebar.success("وضع الاستدامة نشط")
-
+        
     # تحليل النتائج
     col1, col2 = st.columns(2)
     
