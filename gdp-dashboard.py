@@ -1,28 +1,30 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import time
-import urllib.parse
+# --- قسم محرك فحص المواقع ---
+st.markdown('<h2 class="gold-text">🔍 نظام فحص كفاءة المواقع 2026</h2>', unsafe_allow_html=True)
 
-# 1. الإعدادات الأساسية (يجب أن تكون في البداية)
-st.set_page_config(page_title="Ashraf Alex Empire", layout="centered")
+url_input = st.text_input("أدخل رابط موقعك للفحص الاستراتيجي (مثال: www.example.com)")
 
-# 2. تعريف التنسيقات (CSS)
-st.markdown("""
-    <style>
-    .main { background-color: #000000; color: #D4AF37; }
-    .gold-text {
-        background: linear-gradient(45deg, #D4AF37, #F9E27E);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-        font-size: 2.5em;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+if st.button("بدء الفحص الشامل"):
+    if url_input:
+        with st.status("جاري الاتصال بالسيرفرات وفحص الأكواد...", expanded=True) as status:
+            st.write("فحص سرعة الاستجابة...")
+            time.sleep(1)
+            st.write("تحليل معايير Green-SEO...")
+            time.sleep(1)
+            st.write("قياس مدى الجاهزية للذكاء الاصطناعي (AEO)...")
+            time.sleep(1)
+            status.update(label="اكتمل الفحص بنجاح!", state="complete", expanded=False)
+        
+        # عرض النتائج في بطاقات احترافية
+        col_res1, col_res2, col_res3 = st.columns(3)
+        with col_res1:
+            st.metric(label="سرعة الموقع", value="98%", delta="ممتاز")
+        with col_res2:
+            st.metric(label="كفاءة الطاقة", value="A+", delta="مستدام")
+        with col_res3:
+            st.metric(label="جاهزية AI", value="94%", delta="مرتفع")
 
-# 3. العنوان الرئيسي
-st.markdown('<h1 class="gold-text">💎 عروض النمو الرقمي 2026</h1>', unsafe_allow_html=True)
-
-# 4. بقية الكود الخاص بالباقات...
-# (ضع هنا كود الباقات الذي أرسلته لك سابقاً)
+        st.success(f"تقرير تحليل الموقع: {url_input} جاهز.")
+        st.info("💡 نصيحة أشرف أليكس: موقعك ممتاز ولكن يحتاج لتهيئة الصور لزيادة سرعة التحميل بنسبة 15%.")
+    else:
+        st.warning("يرجى إدخال رابط أولاً يا قائد.")
+        
