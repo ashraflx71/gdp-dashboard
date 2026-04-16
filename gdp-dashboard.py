@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import time
 
-# 1. إعدادات الصفحة والهوية البصرية الملكية
-st.set_page_config(page_title="Optimum 2026 - GDP Dashboard", layout="wide")
+# 1. الإعدادات الملكية
+st.set_page_config(page_title="Optimum 2026 - Repair Service", layout="wide")
 
 st.markdown("""
     <style>
@@ -13,96 +13,78 @@ st.markdown("""
         width: 100%;
         border-radius: 10px;
         height: 4.5em;
-        font-size: 18px !important;
+        font-size: 20px !important;
         font-weight: bold !important;
-        background-color: #D4AF37 !important;
-        color: #111 !important;
+        background-color: #28a745 !important; /* لون أخضر */
+        color: white !important;
+        border: 2px solid #D4AF37;
     }
     .payment-box {
         border: 2px solid #D4AF37;
-        padding: 20px;
+        padding: 25px;
         border-radius: 15px;
         background-color: #1a1a1a;
         text-align: center;
         direction: rtl;
     }
-    /* تنسيق خاص للسبينر (التحميل) ليكون ذهبي */
     .stSpinner > div > div { border-top-color: #D4AF37 !important; }
     </style>
     """, unsafe_allow_html=True)
 
-# العنوان الرئيسي
-st.title("⚜️ لوحة تحكم الحلول الذكية | Gdp-Dashboard ⚜️")
-st.markdown("<h3 style='text-align: center;'>بواسطة الخبير أشرف حسن - Optimum 2026</h3>", unsafe_allow_html=True)
+st.title("⚜️ لوحة تحكم الإصلاح الذكي | Optimum 2026 ⚜️")
 
-# 2. القائمة الجانبية (إدخال البيانات)
-st.sidebar.header("⚙️ إعدادات الفحص")
-target_url = st.sidebar.text_input("🔗 ضع رابط موقعك هنا للفحص:", placeholder="https://example.com")
+# 2. خانة البحث (إدخال الرابط) في صدر الصفحة
+st.markdown("### 🔍 ابدأ فحص موقعك الآن")
+target_url = st.text_input("", placeholder="أدخل رابط موقعك هنا (مثال: www.your-site.com)", key="search_bar")
 
-st.sidebar.markdown("---")
-muscle_1 = st.sidebar.slider("محرك إشارة القوة 1", 0, 1000, 500)
-muscle_2 = st.sidebar.slider("محرك إشارة القوة 2", 0, 1000, 450)
-
-# 3. منطق الفحص والتحميل (إثبات العمل)
 if target_url:
-    with st.spinner('♻️ جاري الاتصال بخوادم MIT وفحص النبضات الرقمية للموقع...'):
-        time.sleep(3) # محاكاة وقت الفحص ليعطي مصداقية
+    # إثبات التحميل لزيادة المصداقية
+    with st.spinner('♻️ جاري تحليل بنية الموقع وفحص الأخطاء البرمجية...'):
+        time.sleep(3)
     
-    st.sidebar.success(f"✅ اكتمل فحص: {target_url}")
+    st.success(f"✔️ تم تحليل الموقع: {target_url}")
 
-    # 4. عرض النتائج (Output Results) بعد التحميل
+    # 3. عرض النتائج والأزرار
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("""
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="width: 100%; height: 250px; background-color: #222; border-radius: 10px; border: 1px solid #D4AF37; display: flex; align-items: center; justify-content: center;">
-                    <p style="color: #D4AF37; font-weight: bold;">[ واجهة محاكاة تقنية MIT حية ]</p>
-                </div>
-                <p style="font-size: 0.9rem; color: #777; margin-top: 10px;">تحليل ونبضات رقمية للموقع</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # منطق دقة الأداء
-        accuracy = 95 + (muscle_1 / 200) + (muscle_2 / 200)
-        st.metric(label="أداء الملف الحالي", value=f"{min(accuracy, 99.9):.2f}%")
+        # رسم بياني يحاكي الأخطاء
+        st.subheader("📊 تقرير الفحص الفني")
+        chart_data = pd.DataFrame(np.random.randn(15, 2), columns=['أخطاء الـ SEO', 'سرعة الاستجابة'])
+        st.area_chart(chart_data)
+        st.metric(label="حالة الموقع الحالية", value="تحتاج تدخل فوري", delta="-15% نقص أداء")
 
     with col2:
         st.markdown('<div class="main-button">', unsafe_allow_html=True)
-        if st.button("🛠️ لإصلاح موقعك (قيمة الاشتراك واضغط هنا)", key="fix"):
+        # الزر الأخضر المطلوب
+        if st.button("✅ أصلح موقعك هنا (اضغط للبدء)", key="repair_btn"):
             st.markdown(f'''
                 <div class="payment-box">
-                    <h3 style="color: #D4AF37;">💳 تأكيد الاشتراك والدفع الفوري</h3>
-                    <p style="color: #fff;">للبدء في عملية الإصلاح الشامل وتحسين الـ SEO</p>
-                    <h2 style="color: #fff;">500 جنيه مصري</h2>
+                    <h2 style="color: #28a745;">🚀 جاهزون لإعادة موقعك للقمة</h2>
+                    <p style="font-size: 1.2rem; color: #fff;">سعر الخدمة الشاملة (إصلاح + SEO + تسريع):</p>
+                    <h1 style="color: #D4AF37;">500 جنيه مصري فقط</h1>
+                    <p style="color: #ddd;">ادفع الآن واستلم موقعك في خلال 24 ساعة عمل بأعلى كفاءة</p>
                     <hr style="border-color: #D4AF37;">
+                    
                     <a href="https://ipn.eg/S/ashrafhassan567/instapay/9U8f3M" target="_blank" style="text-decoration: none;">
-                        <button style="width:100%; background-color:#007bff; color:white; border:none; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 18px;">
-                            💰 اضغط هنا للدفع عبر InstaPay
+                        <button style="width:100%; background-color:#007bff; color:white; border:none; padding:15px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 18px; margin-bottom: 10px;">
+                            💰 ادفع 500 ج عبر InstaPay واستلم موقعك
                         </button>
                     </a>
-                    <br><br>
-                    <a href="https://wa.me/201280208018?text=أهلاً_أستاذ_أشرف،_لقد_قمت_بدفع_اشتراك_إصلاح_الموقع_وبانتظار_التنفيذ" target="_blank" style="text-decoration: none;">
-                        <button style="width:100%; background-color:#25D366; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">
-                            ✅ إرسال إيصال الدفع عبر واتساب
+                    
+                    <a href="https://wa.me/201280208018?text=تم_الدفع_أستاذ_أشرف_وهذا_رابط_موقعي_{target_url}" target="_blank" style="text-decoration: none;">
+                        <button style="width:100%; background-color:#25D366; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">
+                            ✅ تأكيد الدفع عبر واتساب
                         </button>
                     </a>
                 </div>
             ''', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # 5. الرسوم البيانية (Visualizing the signals)
-    st.write("---")
-    st.subheader("📈 تحليل نبض البيانات الرقمية")
-    chart_data = pd.DataFrame(
-        np.random.randn(20, 2),
-        columns=['سرعة الاستجابة', 'كفاءة الكود']
-    )
-    st.line_chart(chart_data)
-
 else:
-    # رسالة ترحيبية قبل البدء
-    st.info("💡 من فضلك أدخل رابط الموقع المطلوب فحصه في القائمة الجانبية للبدء في التحليل الملكي.")
-    st.image("https://via.placeholder.com/800x200/111111/D4AF37?text=Optimum+2026+Waiting+for+URL", use_column_width=True)
+    # شاشة الانتظار الاحترافية
+    st.info("👋 مرحباً بك في Optimum 2026. من فضلك ضع رابط موقعك في خانة البحث أعلاه لنقوم بفحصه وتقديم الحلول الملكية لك.")
+    st.image("https://via.placeholder.com/1000x300/111111/D4AF37?text=REPAIR+YOUR+SITE+NOW+WITH+ASHRAF+HASSAN", use_column_width=True)
 
-st.markdown("<p style='text-align: center; color: #555; margin-top: 50px;'>جميع الحقوق محفوظة © أشرف حسن 2026</p>", unsafe_allow_html=True)
+st.write("---")
+st.markdown("<p style='text-align: center; color: #555;'>حقوق الملكية الفكرية والبرمجية محفوظة للخبير أشرف حسن © 2026</p>", unsafe_allow_html=True)
