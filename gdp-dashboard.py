@@ -1,32 +1,30 @@
 import streamlit as st
 import pandas as pd
-import requests
-import io
 
 st.set_page_config(page_title="GDP Dashboard 2026", layout="wide")
 st.title("📊 لوحة تحكم الناتج المحلي الإجمالي")
 
-# ضع المعرف (ID) الخاص بجدولك هنا بدقة شديدة
-SHEET_ID = "ضع_هنا_المعرف_الذي_استخرجته"
+# ضع المعرف الخاص بجدولك هنا (ID فقط)
+SHEET_ID = "ضع_هنا_المعرف_الخاص_بجدولك"
 
-# هذه الصيغة هي الأدق للوصول المباشر
-URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv"
+# الرابط المباشر بصيغة التصدير
+URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv"
 
 try:
-    response = requests.get(URL)
-    if response.status_code == 200:
-        # قراءة البيانات مع دعم اللغة العربية
-        df = pd.read_csv(io.StringIO(response.text))
-        st.success("✅ تم الاتصال بالبيانات بنجاح!")
-        
-        st.dataframe(df, use_container_width=True)
-        
-        # التأكد من وجود بيانات للرسم البياني
-        if not df.empty:
-            st.line_chart(df.set_index(df.columns[0]))
-    else:
-        st.error(f"فشل الوصول للجدول. كود الخطأ: {response.status_code}")
-        st.info("تأكد من أنك نسخت المعرف (ID) بشكل صحيح من رابط المتصفح.")
+    # محاولة قراءة البيانات
+    df = pd.read_csv(URL)
+    
+    st.success("✅ تم الاتصال بنجاح! البيانات حية الآن.")
+    
+    # عرض البيانات
+    st.dataframe(df, use_container_width=True)
+    
+    # رسم بياني
+    if not df.empty:
+        st.subheader("التمثيل البياني للنمو")
+        st.line_chart(df.set_index(df.columns[0]))
 
 except Exception as e:
-    st.error(f"حدث خطأ تقني: {str(e)}")
+    st.error("❌ لا يزال هناك عائق في الوصول.")
+    st.write(f"نوع الخطأ: {e}")
+    st.info("💡 تأكد من أنك ضغطت على 'Share' ثم جعلت الوصول 'Anyone with the link can view'.")
