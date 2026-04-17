@@ -1,31 +1,32 @@
 import streamlit as st
 import pandas as pd
-import io
 import requests
+import io
 
 st.set_page_config(page_title="GDP Dashboard 2026", layout="wide")
 st.title("📊 لوحة تحكم الناتج المحلي الإجمالي")
 
-# ضع هنا رقم التعريف الخاص بجدولك (الموجود في الرابط بين /d/ و /edit)
-# تأكد أن الجدول متاح للجميع (Anyone with the link can view)
-SHEET_ID = "ضع_هنا_رقم_التعريف_الخاص_بجدولك"
-URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv"
+# ضع المعرف (ID) الخاص بجدولك هنا بدقة شديدة
+SHEET_ID = "ضع_هنا_المعرف_الذي_استخرجته"
+
+# هذه الصيغة هي الأدق للوصول المباشر
+URL = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv"
 
 try:
-    # جلب البيانات باستخدام requests مع تحديد الترميز لدعم العربية
     response = requests.get(URL)
-    response.encoding = 'utf-8' # هذا السطر هو مفتاح الحل لمشكلة الـ ascii
-    
     if response.status_code == 200:
+        # قراءة البيانات مع دعم اللغة العربية
         df = pd.read_csv(io.StringIO(response.text))
-        st.success("✅ تم تحديث البيانات بنجاح من المصدر الحي!")
+        st.success("✅ تم الاتصال بالبيانات بنجاح!")
         
-        # عرض البيانات والرسوم
         st.dataframe(df, use_container_width=True)
-        # تأكد أن العمود الأول يحتوي على السنوات أو الأسماء
-        st.line_chart(df.set_index(df.columns[0]))
+        
+        # التأكد من وجود بيانات للرسم البياني
+        if not df.empty:
+            st.line_chart(df.set_index(df.columns[0]))
     else:
         st.error(f"فشل الوصول للجدول. كود الخطأ: {response.status_code}")
+        st.info("تأكد من أنك نسخت المعرف (ID) بشكل صحيح من رابط المتصفح.")
 
 except Exception as e:
     st.error(f"حدث خطأ تقني: {str(e)}")
